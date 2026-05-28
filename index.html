@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>file-interface</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="title-bar">
+            <h2 class="site-title">file-interface</h2>
+        </div>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <div class="size-control">
+                    <span class="size-label">size</span>
+                    <select id="width-select">
+                        <option value="100px">XS</option>
+                        <option value="150px" selected>S</option>
+                        <option value="200px">M</option>
+                        <option value="300px">L</option>
+                    </select>
+                </div>
+            </div>
+            <div class="navbar-right">
+                <a class="nav-link">settings</a>
+                <div class="dropdown">
+                    <a class="dropdown-toggle nav-link">↑ upload</a>
+                    <div class="dropdown-content" id="uploadFormContainer">
+                        <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="POST">
+                            <input type="hidden" name="uploadDirectory" id="uploadDirectory" value="filestorage">
+                            <input type="file" name="uploadFileForm" multiple><br><br>
+                            <input type="submit" value="Upload">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-section">
+        <div class="breadcrumb-bar" id="breadcrumb-bar">
+            <button class="back-btn" id="back-btn" style="display:none;">← back</button>
+            <span class="breadcrumb-path" id="breadcrumb-path"></span>
+        </div>
+        <div class="content" id="image-containers"></div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="modal-title"></span>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+                <span class="modal-meta" id="modal-meta"></span>
+                <a class="modal-open-link" id="modal-open-link" target="_blank">open directly ↗</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/main.js"></script>
+</body>
