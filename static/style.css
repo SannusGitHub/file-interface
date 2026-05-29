@@ -27,9 +27,6 @@ body {
     margin: 0;
     min-height: 100vh;
     background-color: var(--bg);
-    background-image:
-        linear-gradient(rgba(139,143,232,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,143,232,0.03) 1px, transparent 1px);
     background-size: 32px 32px;
     color: var(--text);
     font-family: 'Eurostile Regular', 'Trebuchet MS', sans-serif;
