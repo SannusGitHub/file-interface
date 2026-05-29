@@ -25,6 +25,20 @@ func CreateFile(fileName string, dir string) (*os.File, error) {
 	return dst, nil
 }
 
+func DeleteFile(dir string) error {
+	dir = filepath.Clean(dir)
+	if filepath.IsAbs(dir) || strings.HasPrefix(dir, "..") {
+		return fmt.Errorf("invalid directory: %s", dir)
+	}
+
+	e := os.Remove(dir)
+	if e != nil {
+		return fmt.Errorf("could not remove file: %s", dir)
+	}
+
+	return nil
+}
+
 const thumbSize = 300 // max width or height in pixels
 
 var videoExtensions = map[string]bool{

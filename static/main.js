@@ -17,6 +17,7 @@ class fileElement {
     init() {
         const thumb = document.createElement('div');
         thumb.className = "image-container-thumb";
+        thumb.setAttribute("raw", this.filePath);
         this.parentElement.appendChild(thumb);
         this.element = thumb;
 
@@ -127,7 +128,6 @@ function navigateTo(directory) {
 }
 
 function fetchList(directory) {
-    // Push current directory to history before navigating
     const pathLabel = document.getElementById('breadcrumb-path');
     const currentPath = pathLabel ? pathLabel.textContent : '';
     if (currentPath !== directory) {
@@ -169,6 +169,41 @@ function formatBytes(bytes) {
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
+let targetElement = null;
+
+function manageRightClickMenu() {
+    const menu = document.getElementById('right-click-settings');
+
+    document.addEventListener('contextmenu', function(e) {
+        const thumb = e.target.closest('.image-container-thumb');
+        
+        if (thumb) {
+            e.preventDefault();
+            targetElement = thumb;
+            menu.style.display = 'block';
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+            } else {
+            menu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', function() {
+        menu.style.display = 'none';
+    });
+
+    document.getElementById('menu-delete').addEventListener('click', function() {
+        if (targetElement) {
+            fetch('/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: targetElement.getAttribute('raw') })
+            })
+            fetchList("filestorage");
+        }
+    });
+}
+
 function openModal(file) {
     const overlay   = document.getElementById('modal-overlay');
     const title     = document.getElementById('modal-title');
@@ -208,13 +243,13 @@ function openModal(file) {
             .catch(() => { pre.textContent = 'failed to load file.'; });
 
     } else {
-        // Unknown type — offer a download link
+        // unknown type, offer a download link
         body.innerHTML = `<span style="color:var(--text-dim);font-size:0.9em;">
             No preview available. <a href="${url}" download style="color:var(--accent);">Download file</a>
         </span>`;
     }
 
-    // Fetch metadata from backend (size etc.)
+    // fetch metadata from backend (size etc.)
     fetch('/meta', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -224,7 +259,7 @@ function openModal(file) {
         .then(data => {
             meta.textContent = `${file.path}  ·  ${formatBytes(data.size)}`;
         })
-        .catch(() => {}); // metadata is non-critical, fail silently
+        .catch(() => {});
 
     overlay.classList.add('active');
 }
@@ -233,13 +268,11 @@ function closeModal() {
     const overlay = document.getElementById('modal-overlay');
     const body    = document.getElementById('modal-body');
     overlay.classList.remove('active');
-    // Stop any playing video
     const video = body.querySelector('video');
     if (video) video.pause();
     body.innerHTML = '';
 }
 
-// Wire up close button and overlay click-outside
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeModal();
@@ -249,7 +282,6 @@ document.addEventListener('keydown', (e) => {
 });
 
 window.onload = function() {
-    // Upload dropdown
     const toggle = document.querySelector('.dropdown-toggle');
     const dropdown = document.getElementById('uploadFormContainer');
 
@@ -264,7 +296,6 @@ window.onload = function() {
         }
     });
 
-    // In window.onload, after the dropdown toggle listener
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -286,7 +317,6 @@ window.onload = function() {
         .catch(err => console.error('Upload failed:', err));
     });
 
-    // Back button
     const backBtn = document.getElementById('back-btn');
     backBtn.addEventListener('click', () => {
         if (directoryHistory.length > 0) {
@@ -296,16 +326,19 @@ window.onload = function() {
         }
     });
 
-    // Initial load
+    // initial load
     fetchList("filestorage");
-    // Clear the history entry added by the initial fetchList call
+    // clear the history entry added by the initial fetchList call
     directoryHistory.length = 0;
     updateBreadcrumb("filestorage");
 
-    // Size selector
+    // right click menu
+    manageRightClickMenu();
+
+    // size selector
     const selectElement = document.getElementById('width-select');
 
-    // Restore saved size
+    // restore saved size
     const savedSize = localStorage.getItem("image_size");
     if (savedSize) {
         selectElement.value = savedSize;
@@ -314,7 +347,7 @@ window.onload = function() {
 
     selectElement.addEventListener('change', function() {
         const newWidth = this.value;
-        // Update grid column size on the container
+        // update grid column size on the container
         document.getElementById('image-containers').style.setProperty('--thumb-size', newWidth);
         fileElements.forEach(obj => obj.resize(newWidth));
         localStorage.setItem("image_size", this.value);

@@ -432,3 +432,24 @@ input[type="submit"]:hover {
 .modal-open-link:hover {
     color: var(--accent);
 }
+
+#right-click-settings {
+    display: none;
+    position: absolute;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    z-index: 9999;
+}
+
+#right-click-settings p {
+    margin: 0;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-dim);
+}
+
+#right-click-settings p:hover {
+    background: var(--accent);
+    color: var(--text);
+}

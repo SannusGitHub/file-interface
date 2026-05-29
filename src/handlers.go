@@ -38,6 +38,10 @@ type metaRequestStruct struct {
 	Path string `json:"path"`
 }
 
+type deleteRequestStruct struct {
+	Path string `json:"path"`
+}
+
 type metaResponseStruct struct {
 	Size    int64  `json:"size"`
 	ModTime string `json:"modtime"`
@@ -141,6 +145,23 @@ func handleFiles() {
 
 		writer.WriteHeader(http.StatusOK)
 		// http.Redirect(writer, request, request.Header.Get("Referer"), http.StatusFound)
+	})
+
+	// delete
+	http.HandleFunc("/delete", func(writer http.ResponseWriter, request *http.Request) {
+		var req deleteRequestStruct
+
+		if err := json.NewDecoder(request.Body).Decode(&req); err != nil {
+			http.Error(writer, "Invalid request", http.StatusBadRequest)
+			return
+		}
+
+		if err := controllers.DeleteFile(req.Path); err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		writer.WriteHeader(http.StatusOK)
 	})
 
 	// meta
