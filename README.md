@@ -10,7 +10,7 @@ The project was initially designed as a personal project so I can better navigat
 ## Features
 * Front-end
      * Basic interface
-        * Uploading files
+        * Managing files (Upload, Download, Deletion)
         * Folder navigation
         * Setting scale (XS / S / M / L)
         * Preview modal & file info

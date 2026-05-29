@@ -198,8 +198,14 @@ function manageRightClickMenu() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path: targetElement.getAttribute('raw') })
+            }).then(response => {
+                if (!response.ok) {
+                    console.error('Delete failed:', response.statusText);
+                    return;
+                }
+                fetchList("filestorage");
             })
-            fetchList("filestorage");
+            .catch(err => console.error('Request error:', err));
         }
     });
 }
@@ -238,7 +244,7 @@ function openModal(file) {
         body.appendChild(pre);
 
         fetch(url)
-            .then(r => r.text())
+            .then(response => response.text())
             .then(text => { pre.textContent = text; })
             .catch(() => { pre.textContent = 'failed to load file.'; });
 
@@ -285,6 +291,8 @@ window.onload = function() {
     const toggle = document.querySelector('.dropdown-toggle');
     const dropdown = document.getElementById('uploadFormContainer');
 
+    const form = document.getElementById('uploadForm');
+
     toggle.addEventListener('click', (e) => {
         e.preventDefault();
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
@@ -296,7 +304,7 @@ window.onload = function() {
         }
     });
 
-    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
 
         const formData = new FormData(this);
@@ -313,6 +321,8 @@ window.onload = function() {
             directoryHistory.length = 0;
             savedHistory.forEach(p => directoryHistory.push(p));
             updateBreadcrumb(currentPath);
+        
+            form.reset();
         })
         .catch(err => console.error('Upload failed:', err));
     });

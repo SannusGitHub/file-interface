@@ -10,6 +10,12 @@ import (
 	"strings"
 
 	"golang.org/x/image/draw"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
+
+	_ "golang.org/x/image/webp"
 )
 
 func CreateFile(fileName string, dir string) (*os.File, error) {
@@ -87,6 +93,7 @@ func generateVideoThumbnail(videoPath, thumbPath string) string {
 		thumbPath,
 	)
 	if err := cmd.Run(); err != nil {
+		fmt.Println("ffmpeg error:", err)
 		return ""
 	}
 	return thumbPath
@@ -101,6 +108,7 @@ func generateImageThumbnail(imagePath, thumbPath string) string {
 
 	src, _, err := image.Decode(f)
 	if err != nil {
+		fmt.Println("decode error:", err, "path:", imagePath)
 		return ""
 	}
 
