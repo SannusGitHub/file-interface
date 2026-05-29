@@ -5,7 +5,6 @@
     src: local('Eurostile Regular'), url('fonts/eurostile.woff') format('woff');
 }
 
-/* ── Variables ── */
 :root {
     --bg:        #2b2e42;
     --bg-deep:   #1e2030;
@@ -21,7 +20,6 @@
     --transition:150ms ease;
 }
 
-/* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
@@ -37,11 +35,18 @@ body {
     font-family: 'Eurostile Regular', 'Trebuchet MS', sans-serif;
 }
 
-/* ── Title Bar ── */
 .title-bar {
     background-color: var(--bg-deep);
-    padding: 8px 20px;
     border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+}
+
+.image-title {
+    margin-left: auto;
+    height: 32px;
+    width: auto;
+    display: block;
 }
 
 .site-title {
@@ -51,13 +56,9 @@ body {
     letter-spacing: 0.12em;
     color: var(--accent);
     text-transform: lowercase;
-    background-image: url('images/titleb.png');
-    background-repeat: no-repeat;
-    background-position: right center;
-    padding-right: 60px;
+    padding-left: 20px;
 }
 
-/* ── Navbar ── */
 .navbar {
     display: flex;
     align-items: center;
@@ -90,7 +91,6 @@ body {
     background-color: var(--surface-2);
 }
 
-/* ── Size Control ── */
 .size-control {
     display: flex;
     align-items: center;
@@ -110,7 +110,6 @@ select {
     border: 1px solid var(--border);
     color: var(--text);
     padding: 4px 8px;
-    border-radius: 4px;
     font-size: 0.82em;
     cursor: pointer;
     outline: none;
@@ -126,7 +125,6 @@ option {
     color: var(--text);
 }
 
-/* ── Dropdown (Upload) ── */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -139,7 +137,6 @@ option {
     right: 0;
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
     padding: 16px;
     z-index: 100;
     box-shadow: var(--shadow);
@@ -164,7 +161,6 @@ input[type="file"]::file-selector-button {
     border: 1px solid var(--border);
     color: var(--text);
     padding: 5px 10px;
-    border-radius: 4px;
     cursor: pointer;
     margin-right: 8px;
     transition: background-color var(--transition);
@@ -180,7 +176,6 @@ input[type="submit"] {
     border: 1px solid var(--accent);
     color: var(--text);
     padding: 7px 14px;
-    border-radius: 4px;
     cursor: pointer;
     font-size: 0.85em;
     letter-spacing: 0.06em;
@@ -192,7 +187,6 @@ input[type="submit"]:hover {
     background-color: var(--accent);
 }
 
-/* ── Breadcrumb / Back Button ── */
 .breadcrumb-bar {
     display: flex;
     align-items: center;
@@ -207,7 +201,6 @@ input[type="submit"]:hover {
     border: 1px solid var(--border);
     color: var(--text-dim);
     padding: 4px 12px;
-    border-radius: 4px;
     cursor: pointer;
     font-size: 0.82em;
     letter-spacing: 0.06em;
@@ -226,7 +219,6 @@ input[type="submit"]:hover {
     letter-spacing: 0.06em;
 }
 
-/* ── File Grid ── */
 .content {
     display: grid;
     grid-template-columns: repeat(auto-fill, var(--thumb-size, 150px));
@@ -234,7 +226,6 @@ input[type="submit"]:hover {
     padding: 8px 20px 40px;
 }
 
-/* ── Thumbnail Cards ── */
 .image-container-thumb {
     display: flex;
     width: var(--thumb-size, 150px);
@@ -243,7 +234,6 @@ input[type="submit"]:hover {
     justify-content: center;
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
     padding: 12px 8px 10px;
     overflow: hidden;
     cursor: pointer;
@@ -251,9 +241,9 @@ input[type="submit"]:hover {
 }
 
 .image-container-thumb:hover {
-    transform: translateY(-3px);
+    transform: translateY(-1px);
     border-color: var(--accent-dim);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
 }
 
 .image-container-thumb a {
@@ -261,7 +251,6 @@ input[type="submit"]:hover {
     justify-content: center;
     align-items: center;
     width: 100%;
-    /* fixed-height image well so all thumbs align consistently */
     height: var(--thumb-size, 150px);
     text-decoration: none;
 }
@@ -273,7 +262,6 @@ input[type="submit"]:hover {
     height: auto;
     display: block;
     object-fit: contain;
-    border-radius: 4px;
     transition: opacity var(--transition);
 }
 
@@ -321,7 +309,6 @@ input[type="submit"]:hover {
     opacity: 0.4;
 }
 
-/* ── Modal ── */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -340,7 +327,6 @@ input[type="submit"]:hover {
 .modal {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
     box-shadow: var(--shadow);
     max-width: 90vw;
     max-height: 90vh;
@@ -376,7 +362,6 @@ input[type="submit"]:hover {
     font-size: 1.2em;
     cursor: pointer;
     padding: 2px 6px;
-    border-radius: 4px;
     transition: color var(--transition), background-color var(--transition);
     flex-shrink: 0;
     font-family: 'Eurostile Regular', sans-serif;
@@ -400,14 +385,12 @@ input[type="submit"]:hover {
     max-width: 80vw;
     max-height: 75vh;
     object-fit: contain;
-    border-radius: 4px;
     display: block;
 }
 
 .modal-body video {
     max-width: 80vw;
     max-height: 75vh;
-    border-radius: 4px;
     display: block;
 }
 
