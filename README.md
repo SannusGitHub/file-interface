@@ -15,5 +15,4 @@ The project was initially designed as a personal project so I can better navigat
         * Setting scale (XS / S / M / L)
         * Preview modal & file info
 * Back-end
-     * Upload end-point
-     * File statistics (size, upload date)
+     * Upload, download, file list & meta end-points
