@@ -30,6 +30,11 @@ body {
     background-size: 32px 32px;
     color: var(--text);
     font-family: 'Eurostile Regular', 'Trebuchet MS', sans-serif;
+
+    background-image: url("./images/background.png");
+    background-size: 50px;
+    background-position: bottom;
+    background-attachment: fixed;
 }
 
 .title-bar {

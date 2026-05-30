@@ -25,7 +25,7 @@
             </div>
             <div class="navbar-right">
                 <!-- <a class="nav-link">settings</a> -->
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                     <a class="dropdown-toggle nav-link">upload</a>
                     <div class="dropdown-content" id="uploadFormContainer">
                         <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="POST">
@@ -34,7 +34,7 @@
                             <input type="submit" value="Upload">
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div>
         </nav>
     </div>
@@ -51,7 +51,7 @@
         <div class="modal">
             <div class="modal-header">
                 <span class="modal-title" id="modal-title"></span>
-                <button class="modal-close" id="modal-close">✕</button>
+                <button class="modal-close" id="modal-close">X</button>
             </div>
             <div class="modal-body" id="modal-body"></div>
             <div class="modal-footer">
@@ -62,6 +62,10 @@
     </div>
 
     <div class="right-click-settings" id="right-click-settings">
+        <!-- <p id="menu-create-directory">create folder</p> -->
+        <input type="file" id="fileInput" name="uploadFileForm" multiple style="display: none;">
+        <input type="hidden" name="uploadDirectory" id="uploadDirectory" value="filestorage">
+        <p id="menu-upload">upload</p>
         <p id="menu-delete">delete</p>
     </div>
 

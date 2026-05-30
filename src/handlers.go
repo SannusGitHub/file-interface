@@ -164,6 +164,13 @@ func handleFiles() {
 		writer.WriteHeader(http.StatusOK)
 	})
 
+	// create directory
+	http.HandleFunc("/create-directory", func(writer http.ResponseWriter, request *http.Request) {
+		fmt.Println("creating directory")
+
+		writer.WriteHeader(http.StatusOK)
+	})
+
 	// meta
 	http.HandleFunc("/meta", func(writer http.ResponseWriter, request *http.Request) {
 		var req metaRequestStruct

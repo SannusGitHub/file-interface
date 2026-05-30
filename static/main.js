@@ -175,21 +175,76 @@ function manageRightClickMenu() {
     const menu = document.getElementById('right-click-settings');
 
     document.addEventListener('contextmenu', function(e) {
+        if (e.shiftKey) return;
+
+        e.preventDefault();
         const thumb = e.target.closest('.image-container-thumb');
-        
-        if (thumb) {
-            e.preventDefault();
-            targetElement = thumb;
-            menu.style.display = 'block';
-            menu.style.left = e.clientX + 'px';
-            menu.style.top = e.clientY + 'px';
-            } else {
-            menu.style.display = 'none';
+        targetElement = thumb || null;
+
+        // manage elements that are specifically used for container objects
+        const deleteItem = document.getElementById('menu-delete');
+        if (deleteItem) {
+            deleteItem.style.opacity = targetElement ? '1' : '0.4';
+            deleteItem.style.pointerEvents = targetElement ? 'auto' : 'none';
         }
+
+        menu.style.display = 'block';
+        menu.style.left = e.clientX + 'px';
+        menu.style.top = e.clientY + 'px';
     });
 
     document.addEventListener('click', function() {
         menu.style.display = 'none';
+    });
+
+    /*
+    document.getElementById('menu-create-directory').addEventListener('click', function() {
+        if (targetElement) {
+            fetch('/create-directory', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: targetElement.getAttribute('raw') })
+            }).then(response => {
+                if (!response.ok) {
+                    console.error('Delete failed:', response.statusText);
+                    return;
+                }
+                fetchList("filestorage");
+            })
+            .catch(err => console.error('Request error:', err));
+        }
+    });
+    */
+
+    document.getElementById('menu-upload').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function() {
+        if (this.files.length === 0) return;
+
+        const formData = new FormData();
+        formData.append('uploadDirectory', 'filestorage');
+        for (const file of this.files) {
+            formData.append('uploadFileForm', file);
+        }
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(() => {
+            const currentPath = document.getElementById('breadcrumb-path').textContent;
+            const savedHistory = [...directoryHistory];
+            fetchList(currentPath);
+            directoryHistory.length = 0;
+            savedHistory.forEach(p => directoryHistory.push(p));
+            updateBreadcrumb(currentPath);
+
+            this.value = '';
+        })
+        .catch(err => console.error('Upload failed:', err));
     });
 
     document.getElementById('menu-delete').addEventListener('click', function() {
@@ -289,10 +344,11 @@ document.addEventListener('keydown', (e) => {
 
 window.onload = function() {
     const toggle = document.querySelector('.dropdown-toggle');
-    const dropdown = document.getElementById('uploadFormContainer');
+    // const dropdown = document.getElementById('uploadFormContainer');
 
     const form = document.getElementById('uploadForm');
 
+    /*
     toggle.addEventListener('click', (e) => {
         e.preventDefault();
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
@@ -326,6 +382,7 @@ window.onload = function() {
         })
         .catch(err => console.error('Upload failed:', err));
     });
+    */
 
     const backBtn = document.getElementById('back-btn');
     backBtn.addEventListener('click', () => {

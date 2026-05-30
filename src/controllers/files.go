@@ -18,6 +18,19 @@ import (
 	_ "golang.org/x/image/webp"
 )
 
+func CreateDirectory(directoryName string, dir string) error {
+	dir = filepath.Clean(dir)
+	if filepath.IsAbs(dir) || strings.HasPrefix(dir, "..") {
+		return fmt.Errorf("invalid directory: %s", dir)
+	}
+
+	err := os.Mkdir("./"+dir+"/"+directoryName, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func CreateFile(fileName string, dir string) (*os.File, error) {
 	dir = filepath.Clean(dir)
 	if filepath.IsAbs(dir) || strings.HasPrefix(dir, "..") {
